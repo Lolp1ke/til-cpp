@@ -2,7 +2,8 @@
 #include <fstream>
 #include <iostream>
 
-#include "./lexer/lexer.cpp"
+#include "./lexer/lexer.h"
+#include "./parser/parser.h"
 
 int main(int argv, char **argc) {
 	if (argv != 2) return EXIT_FAILURE;
@@ -16,11 +17,12 @@ int main(int argv, char **argc) {
 	}
 	source.close();
 
-	Lexer lexer(code);
+	Lexer lexer(&code);
 	const vector<Token> &tokens = lexer.analysis();
 	for (const Token &token: tokens) {
 		std::cout << token.TYPE.NAME << "\n";
 	}
+	Parser parser(&tokens);
 
 	return EXIT_SUCCESS;
 }

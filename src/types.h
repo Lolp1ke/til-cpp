@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <regex>
 #include <string>
 #include <variant>
@@ -13,3 +14,6 @@ using vector = std::vector<T>;
 
 template<typename... T>
 using variant = std::variant<T...>;
+
+template<typename T, size_t N>
+using array = std::array<T, N>;

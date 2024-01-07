@@ -1,47 +1,36 @@
-#include "../token/token.cpp"
+#include "lexer.h"
 
-class Lexer {
-	private:
-	const string CODE;
-	unsigned int pos{0};
-	vector<Token> tokens;
-	const vector<TokenType> tokenTypes = TokenList().getAll();
+Lexer::Lexer(const string *CODE)
+    : CODE(*CODE) {
+}
 
-	public:
-	explicit Lexer(string CODE)
-	    : CODE(std::move(CODE)) {
-	}
+bool Lexer::next() {
+	if (this->pos >= this->CODE.length()) return false;
 
-	private:
-	bool next() {
-		if (this->pos >= this->CODE.length()) return false;
+	for (const TokenType &tokenType: tokenTypes) {
+		const string &substr = this->CODE.substr(this->pos);
 
-		for (const TokenType &tokenType: tokenTypes) {
-			const string &substr = this->CODE.substr(this->pos);
-
-			std::smatch smatch;
-			const bool &isToken = std::regex_search(substr, smatch, tokenType.REGEXP);
-			if (isToken) {
-				const string &token = smatch[0].str();
-				this->tokens.emplace_back(tokenType, token, this->pos);
-				this->pos += token.length();
-				return true;
-			}
+		std::smatch smatch;
+		const bool &isToken = std::regex_search(substr, smatch, tokenType.REGEXP);
+		if (isToken) {
+			const string &token = smatch[0].str();
+			this->tokens.emplace_back(&tokenType, &token, &this->pos);
+			this->pos += token.length();
+			return true;
 		}
-
-		return false;
 	}
 
-	public:
-	vector<Token> analysis() {
-		while (this->next()) {}
+	return false;
+}
 
-		vector<Token> filteredTokens;
-		for (const Token &token: this->tokens) {
-			if (token.TYPE.NAME == TokenList().SPACE.NAME) continue;
-			filteredTokens.push_back(token);
-		}
+vector<Token> Lexer::analysis() {
+	while (this->next()) {}
 
-		return filteredTokens;
+	vector<Token> filteredTokens;
+	for (const Token &token: this->tokens) {
+		if (token.TYPE.NAME == TokenList().SPACE.NAME) continue;
+		filteredTokens.push_back(token);
 	}
-};
+
+	return filteredTokens;
+}
