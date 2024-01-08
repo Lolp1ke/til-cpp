@@ -21,8 +21,8 @@ class Parser {
 	const Node *parentheses();
 	const Node *expression();
 	const Node *parse();
-	const Node *code();
 
 	public:
-	auto run(const Node *node);
+	const Node *code();
+	void run(const Node *NODE);
 };

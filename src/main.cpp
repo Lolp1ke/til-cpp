@@ -20,9 +20,12 @@ int main(int argv, char **argc) {
 	Lexer lexer(&code);
 	const vector<Token> &tokens = lexer.analysis();
 	for (const Token &token: tokens) {
-		std::cout << token.TYPE.NAME << "\n";
+		//		std::cout << token.TYPE.NAME << "\n";
 	}
+	std::cout << std::endl;
 	Parser parser(&tokens);
+
+	parser.run(parser.code());
 
 	return EXIT_SUCCESS;
 }

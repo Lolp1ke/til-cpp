@@ -30,4 +30,7 @@ add_executable(til_cpp src/main.cpp
 	
 	src/AST/variable/variable.node.cpp
 	src/AST/variable/variable.node.h
+	
+	src/types.h
+	src/util.h
 )
